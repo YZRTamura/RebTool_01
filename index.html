@@ -10,22 +10,14 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;background:#f5f5f5;color:#1a1a1a}
 .screen{display:none}.screen.active{display:block}
-.config-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
-.config-card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:1.75rem;width:min(480px,100%);box-shadow:0 2px 12px rgba(0,0,0,.08)}
-.config-card h2{font-size:18px;font-weight:600;margin-bottom:6px}
-.config-card p{font-size:13px;color:#666;margin-bottom:1.25rem}
+/* Config */
+.center-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+.card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:1.75rem;width:min(480px,100%);box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.card h2{font-size:18px;font-weight:600;margin-bottom:6px}
+.card p{font-size:13px;color:#666;margin-bottom:1.25rem}
 .tip{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;margin-bottom:1rem;line-height:1.7}
-.tip code{font-family:monospace;background:#e0f2fe;padding:1px 5px;border-radius:4px;font-size:11px}
 .sql-box{background:#1e1e2e;color:#cdd6f4;border-radius:8px;padding:12px;font-family:monospace;font-size:11px;margin-bottom:1rem;white-space:pre;overflow-x:auto;line-height:1.6}
-.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.fg label{font-size:12px;color:#666;font-weight:500}
-.fg input{padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;outline:none;font-family:monospace}
-.fg input:focus{border-color:#555}
-.btn-primary{width:100%;background:#111;color:#fff;border:none;padding:10px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px}
-.btn-primary:hover{background:#333}
-.btn-primary:disabled{background:#aaa;cursor:not-allowed}
-.config-msg{font-size:12px;margin-top:8px;min-height:16px;text-align:center}
-.config-msg.err{color:#dc2626}.config-msg.ok{color:#059669}
+/* Login */
 .login-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:1rem}
 .login-card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:1.5rem;width:min(400px,100%);box-shadow:0 2px 12px rgba(0,0,0,.08)}
 .login-card h2{font-size:18px;font-weight:600;margin-bottom:1.25rem;text-align:center}
@@ -35,34 +27,41 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .face-indicator{position:absolute;top:8px;right:8px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
 .face-indicator.detected{background:#d1fae5;color:#065f46}
 .face-indicator.none{background:#fee2e2;color:#991b1b}
-.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
-.form-group label{font-size:12px;color:#666;font-weight:500}
-.form-group input{width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none}
-.form-group input:focus{border-color:#555}
-.login-btn{width:100%;background:#111;color:#fff;border:none;padding:10px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:500}
-.login-btn:hover{background:#333}
-.login-btn:disabled{background:#aaa;cursor:not-allowed}
-.login-msg{font-size:12px;text-align:center;color:#dc2626;min-height:18px;margin-bottom:6px}
+/* Form */
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fg label{font-size:12px;color:#666;font-weight:500}
+.fg input,.fg select{padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;outline:none;width:100%;font-family:inherit}
+.fg input:focus,.fg select:focus{border-color:#555}
+.fg.mono input{font-family:monospace}
+/* Buttons */
+.btn{border:none;padding:9px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:5px}
+.btn-primary{background:#111;color:#fff;width:100%;justify-content:center}
+.btn-primary:hover{background:#333}
+.btn-primary:disabled{background:#aaa;cursor:not-allowed}
+.btn-action{background:#111;color:#fff}
+.btn-action:hover{background:#333}
+.btn-action:disabled{background:#aaa;cursor:not-allowed}
+.btn-sec{background:#fff;border:1px solid #ddd;color:#333}
+.btn-sec:hover{background:#f5f5f5}
+.btn-danger{background:#fff;border:1px solid #fca5a5;color:#dc2626}
+.btn-danger:hover{background:#fee2e2}
+/* App */
 .app-wrap{max-width:1100px;margin:0 auto;padding:1.25rem}
 .topbar{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap}
 .topbar h1{font-size:20px;font-weight:600;flex:1}
+.user-info{font-size:12px;color:#666;background:#f5f5f5;padding:4px 10px;border-radius:20px}
 .db-badge{font-size:11px;background:#d1fae5;color:#065f46;padding:3px 8px;border-radius:20px;font-weight:600}
-.btn-sm{background:#fff;border:1px solid #ddd;padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;color:#333}
-.btn-sm:hover{background:#f5f5f5}
-.tabs{display:flex;gap:2px;border-bottom:1px solid #e5e5e5;margin-bottom:1.25rem}
-.tab{padding:9px 18px;font-size:13px;cursor:pointer;border:none;background:none;color:#888;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs{display:flex;gap:2px;border-bottom:1px solid #e5e5e5;margin-bottom:1.25rem;flex-wrap:wrap}
+.tab{padding:9px 16px;font-size:13px;cursor:pointer;border:none;background:none;color:#888;border-bottom:2px solid transparent;margin-bottom:-1px}
 .tab.active{color:#111;border-bottom-color:#111;font-weight:600}
 .section{display:none}.section.active{display:block}
+/* Search */
 .search-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:8px;margin-bottom:10px}
 .search-grid>div>label{font-size:11px;color:#666;display:block;margin-bottom:4px;font-weight:500}
 .search-grid input,.search-grid select{width:100%;padding:7px 9px;border:1px solid #ddd;border-radius:7px;font-size:13px;outline:none;background:#fff}
 .search-actions{display:flex;gap:8px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
-.btn-action{background:#111;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:5px}
-.btn-action:hover{background:#333}
-.btn-action:disabled{background:#aaa;cursor:not-allowed}
-.btn-sec{background:#fff;border:1px solid #ddd;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;color:#333;display:inline-flex;align-items:center;gap:5px}
-.btn-sec:hover{background:#f5f5f5}
 .result-count{font-size:12px;color:#888;margin-left:auto}
+/* Table */
 .table-wrap{overflow-x:auto;border:1px solid #e5e5e5;border-radius:10px;background:#fff}
 table{width:100%;border-collapse:collapse;font-size:12px}
 th{background:#f9f9f9;padding:9px 10px;text-align:left;font-weight:600;font-size:11px;color:#666;border-bottom:1px solid #e5e5e5;white-space:nowrap}
@@ -70,26 +69,31 @@ td{padding:9px 10px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#fafafa}
 .badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;background:#eff6ff;color:#1d4ed8}
+.badge-admin{background:#fef3c7;color:#92400e}
+.badge-user{background:#f0fdf4;color:#166534}
 .act-btns{display:flex;gap:4px}
 .btn-icon{background:none;border:1px solid #e5e5e5;border-radius:6px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#888;font-size:14px}
 .btn-icon:hover{background:#f5f5f5;color:#333}
 .btn-icon.del:hover{background:#fee2e2;color:#dc2626;border-color:#fca5a5}
+/* Form grid */
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:1.25rem}
 .fg2{display:flex;flex-direction:column;gap:5px}
 .fg2 label{font-size:12px;color:#666;font-weight:500}
-.fg2 input,.fg2 textarea{padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;outline:none;font-family:inherit}
-.fg2 input:focus,.fg2 textarea:focus{border-color:#555}
+.fg2 input,.fg2 select,.fg2 textarea{padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;outline:none;font-family:inherit}
+.fg2 input:focus,.fg2 select:focus,.fg2 textarea:focus{border-color:#555}
 .fg2 textarea{height:72px;resize:vertical}
 .full{grid-column:1/-1}
 .empty{padding:2.5rem;text-align:center;color:#aaa;font-size:13px}
 .loading{color:#888;font-size:13px;padding:1.5rem;text-align:center}
 .msg{font-size:12px;margin-top:8px;min-height:16px}
 .msg.ok{color:#059669}.msg.err{color:#dc2626}
+/* Modal */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center;padding:1rem}
 .modal-bg.open{display:flex}
-.modal{background:#fff;border-radius:12px;border:1px solid #e5e5e5;padding:1.5rem;width:min(580px,100%);max-height:88vh;overflow-y:auto}
+.modal{background:#fff;border-radius:12px;border:1px solid #e5e5e5;padding:1.5rem;width:min(520px,100%);max-height:88vh;overflow-y:auto}
 .modal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
 .modal-hd h2{font-size:16px;font-weight:600}
+/* CSV */
 .csv-zone{border:2px dashed #ddd;border-radius:10px;padding:2rem;text-align:center;cursor:pointer;margin-bottom:1rem;transition:background .15s;background:#fff}
 .csv-zone:hover,.csv-zone.drag{background:#f5f5f5}
 .csv-zone i{font-size:32px;color:#aaa;display:block;margin-bottom:8px}
@@ -99,24 +103,31 @@ tr:hover td{background:#fafafa}
 .preview-table table{font-size:11px}
 .infotip{background:#f9f9f9;border-radius:8px;padding:10px 14px;font-size:12px;color:#666;margin-bottom:1rem;border:1px solid #eee}
 .infotip code{font-family:monospace;font-size:11px;background:#ececec;padding:1px 5px;border-radius:4px}
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.section-hd h3{font-size:15px;font-weight:600}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle}
+.spinner-dark{border-color:#333;border-top-color:transparent}
 @keyframes spin{to{transform:rotate(360deg)}}
+.login-msg{font-size:12px;text-align:center;color:#dc2626;min-height:18px;margin-bottom:6px}
+.config-msg{font-size:12px;margin-top:8px;min-height:16px;text-align:center}
+.config-msg.err{color:#dc2626}.config-msg.ok{color:#059669}
 </style>
 </head>
 <body>
 
 <!-- 設定画面 -->
 <div id="screen-config" class="screen active">
-  <div class="config-wrap">
-    <div class="config-card">
+  <div class="center-wrap">
+    <div class="card">
       <h2><i class="ti ti-database" style="vertical-align:-2px;margin-right:6px"></i>Supabase 接続設定</h2>
       <p>初回のみ設定が必要です。入力内容はブラウザに保存されます。</p>
       <div class="tip">
         <b>① <a href="https://supabase.com" target="_blank">supabase.com</a> でプロジェクト作成</b><br>
         <b>② SQL Editor で下記を実行してテーブルを作成</b>
       </div>
-      <div class="sql-box">CREATE TABLE paint_records (
-  id          bigserial PRIMARY KEY,
+      <div class="sql-box">-- 塗装記録テーブル
+CREATE TABLE paint_records (
+  id              bigserial PRIMARY KEY,
   registered_date date,
   customer_name   text NOT NULL,
   car_name        text,
@@ -128,23 +139,27 @@ tr:hover td{background:#fafafa}
   mix_detail      text,
   updated_at      timestamptz DEFAULT now()
 );
--- RLS を無効化（社内利用向け簡易設定）
-ALTER TABLE paint_records DISABLE ROW LEVEL SECURITY;</div>
-      <div class="tip">
-        <b>③ Settings → API から URL と anon key をコピー</b>
-      </div>
-      <div class="fg">
-        <label>Project URL</label>
-        <input type="text" id="cfg-url" placeholder="https://xxxxxxxxxx.supabase.co">
-      </div>
-      <div class="fg">
-        <label>Anon Public Key</label>
-        <input type="text" id="cfg-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6...">
-      </div>
+ALTER TABLE paint_records DISABLE ROW LEVEL SECURITY;
+
+-- ユーザーマスタ
+CREATE TABLE user_master (
+  id            bigserial PRIMARY KEY,
+  employee_code text NOT NULL UNIQUE,
+  employee_name text NOT NULL,
+  role          text NOT NULL DEFAULT 'user',
+  password      text NOT NULL,
+  created_at    timestamptz DEFAULT now()
+);
+ALTER TABLE user_master DISABLE ROW LEVEL SECURITY;
+
+-- 初期管理者
+INSERT INTO user_master (employee_code, employee_name, role, password)
+VALUES ('001', '管理者', 'admin', 'admin');</div>
+      <div class="tip"><b>③ Settings → API Keys → Legacy タブ から anon key をコピー<br>④ Settings → Data API から Project URL をコピー</b></div>
+      <div class="fg mono"><label>Project URL</label><input type="text" id="cfg-url" placeholder="https://xxxxxxxxxx.supabase.co"></div>
+      <div class="fg mono"><label>Anon Public Key</label><input type="text" id="cfg-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..."></div>
       <div class="config-msg" id="cfg-msg"></div>
-      <button class="btn-primary" id="cfg-btn" onclick="saveConfig()">
-        <i class="ti ti-plug"></i> 接続して続ける
-      </button>
+      <button class="btn btn-primary" id="cfg-btn" onclick="saveConfig()"><i class="ti ti-plug"></i> 接続して続ける</button>
     </div>
   </div>
 </div>
@@ -159,15 +174,10 @@ ALTER TABLE paint_records DISABLE ROW LEVEL SECURITY;</div>
         <canvas id="cam-canvas"></canvas>
         <span class="face-indicator none" id="face-ind">顔未検出</span>
       </div>
-      <div class="form-group">
-        <label>パスワード</label>
-        <input type="password" id="pw-input" placeholder="パスワードを入力" oninput="checkLoginReady()" onkeydown="if(event.key==='Enter')doLogin()">
-      </div>
+      <div class="fg"><label>従業員コード</label><input type="text" id="emp-code" placeholder="例：001" oninput="checkLoginReady()" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="fg"><label>パスワード</label><input type="password" id="pw-input" placeholder="パスワードを入力" oninput="checkLoginReady()" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <div class="login-msg" id="login-msg"></div>
-      <button class="login-btn" id="login-btn" disabled onclick="doLogin()">
-        <i class="ti ti-login"></i> ログイン
-      </button>
-      <p style="font-size:11px;color:#aaa;text-align:center;margin-top:12px">デモ用パスワード: <b>admin</b></p>
+      <button class="btn btn-primary" id="login-btn" disabled onclick="doLogin()"><i class="ti ti-login"></i> ログイン</button>
     </div>
     <button style="font-size:11px;color:#aaa;background:none;border:none;cursor:pointer;text-decoration:underline" onclick="resetConfig()">接続設定を変更する</button>
   </div>
@@ -179,14 +189,17 @@ ALTER TABLE paint_records DISABLE ROW LEVEL SECURITY;</div>
     <div class="topbar">
       <h1><i class="ti ti-color-swatch" style="font-size:20px;vertical-align:-2px;margin-right:8px"></i>塗装管理データベース</h1>
       <span class="db-badge"><i class="ti ti-database" style="font-size:11px"></i> Supabase</span>
-      <button class="btn-sm" onclick="doLogout()"><i class="ti ti-logout"></i> ログアウト</button>
+      <span class="user-info" id="user-info"></span>
+      <button class="btn btn-sec" onclick="doLogout()"><i class="ti ti-logout"></i> ログアウト</button>
     </div>
-    <div class="tabs">
+    <div class="tabs" id="main-tabs">
       <button class="tab active" onclick="switchTab('search')"><i class="ti ti-search"></i> 検索</button>
       <button class="tab" onclick="switchTab('add')"><i class="ti ti-plus"></i> 新規登録</button>
       <button class="tab" onclick="switchTab('csv')"><i class="ti ti-file-import"></i> CSVインポート</button>
+      <button class="tab" id="tab-users-btn" style="display:none" onclick="switchTab('users')"><i class="ti ti-users"></i> ユーザー管理</button>
     </div>
 
+    <!-- 検索タブ -->
     <div id="tab-search" class="section active">
       <div class="search-grid">
         <div><label>お客様名</label><input type="text" id="s-name" placeholder="絞り込み"></div>
@@ -198,13 +211,13 @@ ALTER TABLE paint_records DISABLE ROW LEVEL SECURITY;</div>
         <div><label>登録日（終了）</label><input type="date" id="s-dt"></div>
       </div>
       <div class="search-actions">
-        <button class="btn-action" onclick="doSearch()"><i class="ti ti-search"></i> 検索</button>
-        <button class="btn-sec" onclick="clearSearch()">クリア</button>
-        <button class="btn-sec" onclick="exportCSV()"><i class="ti ti-download"></i> CSVエクスポート</button>
+        <button class="btn btn-action" onclick="doSearch()"><i class="ti ti-search"></i> 検索</button>
+        <button class="btn btn-sec" onclick="clearSearch()">クリア</button>
+        <button class="btn btn-sec" onclick="exportCSV()"><i class="ti ti-download"></i> CSVエクスポート</button>
         <span class="result-count" id="result-count"></span>
       </div>
       <div class="table-wrap">
-        <div id="tbl-loading" class="loading"><i class="ti ti-loader" style="animation:spin .8s linear infinite;display:inline-block"></i> 読み込み中...</div>
+        <div id="tbl-loading" class="loading"><span class="spinner spinner-dark"></span> 読み込み中...</div>
         <table id="main-table" style="display:none">
           <thead><tr>
             <th>ID</th><th>登録日</th><th>お客様名</th><th>車名</th><th>登録番号</th>
@@ -212,12 +225,11 @@ ALTER TABLE paint_records DISABLE ROW LEVEL SECURITY;</div>
           </tr></thead>
           <tbody id="result-body"></tbody>
         </table>
-        <div id="empty-msg" class="empty" style="display:none">
-          <i class="ti ti-search-off" style="font-size:28px;display:block;margin-bottom:8px"></i>該当するデータがありません
-        </div>
+        <div id="empty-msg" class="empty" style="display:none"><i class="ti ti-search-off" style="font-size:28px;display:block;margin-bottom:8px"></i>該当するデータがありません</div>
       </div>
     </div>
 
+    <!-- 新規登録タブ -->
     <div id="tab-add" class="section">
       <div class="form-grid">
         <div class="fg2"><label>登録日 *</label><input type="date" id="f-date"></div>
@@ -231,19 +243,20 @@ ALTER TABLE paint_records DISABLE ROW LEVEL SECURITY;</div>
         <div class="fg2 full"><label>調色内容</label><textarea id="f-mix" placeholder="調色の詳細"></textarea></div>
       </div>
       <div style="display:flex;gap:8px">
-        <button class="btn-action" id="add-btn" onclick="addRecord()"><i class="ti ti-plus"></i> 登録する</button>
-        <button class="btn-sec" onclick="clearForm()">クリア</button>
+        <button class="btn btn-action" id="add-btn" onclick="addRecord()"><i class="ti ti-plus"></i> 登録する</button>
+        <button class="btn btn-sec" onclick="clearForm()">クリア</button>
       </div>
       <div id="form-msg" class="msg"></div>
     </div>
 
+    <!-- CSVインポートタブ -->
     <div id="tab-csv" class="section">
       <div class="infotip">
         <b>CSVフォーマット（1行目はヘッダー行）</b><br>
         <code>登録日,お客様名,車名,登録番号,塗装箇所,塗料区分,色番号１,色番号２,調色内容</code><br>
         <span style="margin-top:4px;display:block">日付: <code>2026/01/27</code> または <code>2026-01-27</code>　Excelは「CSV UTF-8」で保存してください。</span>
       </div>
-      <div class="csv-zone" id="csv-zone" onclick="document.getElementById('csv-file').click()"
+      <div class="csv-zone" onclick="document.getElementById('csv-file').click()"
         ondragover="event.preventDefault();this.classList.add('drag')"
         ondragleave="this.classList.remove('drag')"
         ondrop="event.preventDefault();this.classList.remove('drag');handleCsvDrop(event)">
@@ -255,20 +268,36 @@ ALTER TABLE paint_records DISABLE ROW LEVEL SECURITY;</div>
       <div id="csv-preview"></div>
       <div id="csv-msg" class="msg"></div>
       <div id="csv-import-btn" style="display:none;margin-top:10px">
-        <button class="btn-action" id="csv-exec-btn" onclick="importCsv()"><i class="ti ti-file-import"></i> インポート実行</button>
-        <button class="btn-sec" style="margin-left:8px" onclick="cancelCsv()">キャンセル</button>
+        <button class="btn btn-action" id="csv-exec-btn" onclick="importCsv()"><i class="ti ti-file-import"></i> インポート実行</button>
+        <button class="btn btn-sec" style="margin-left:8px" onclick="cancelCsv()">キャンセル</button>
       </div>
+    </div>
+
+    <!-- ユーザー管理タブ（admin only） -->
+    <div id="tab-users" class="section">
+      <div class="section-hd">
+        <h3><i class="ti ti-users" style="vertical-align:-2px;margin-right:6px"></i>ユーザー管理</h3>
+        <button class="btn btn-action" onclick="openUserModal(null)"><i class="ti ti-plus"></i> 新規追加</button>
+      </div>
+      <div class="table-wrap">
+        <div id="users-loading" class="loading"><span class="spinner spinner-dark"></span> 読み込み中...</div>
+        <table id="users-table" style="display:none">
+          <thead><tr>
+            <th>従業員コード</th><th>従業員名</th><th>権限</th><th>登録日</th><th>操作</th>
+          </tr></thead>
+          <tbody id="users-body"></tbody>
+        </table>
+        <div id="users-empty" class="empty" style="display:none"><i class="ti ti-user-off" style="font-size:28px;display:block;margin-bottom:8px"></i>ユーザーがいません</div>
+      </div>
+      <div id="users-msg" class="msg"></div>
     </div>
   </div>
 </div>
 
-<!-- 編集モーダル -->
+<!-- 塗装記録 編集モーダル -->
 <div class="modal-bg" id="edit-modal">
   <div class="modal">
-    <div class="modal-hd">
-      <h2>記録を編集</h2>
-      <button class="btn-icon" onclick="closeModal()"><i class="ti ti-x"></i></button>
-    </div>
+    <div class="modal-hd"><h2>記録を編集</h2><button class="btn-icon" onclick="closeModal('edit-modal')"><i class="ti ti-x"></i></button></div>
     <div class="form-grid">
       <div class="fg2"><label>登録日</label><input type="date" id="e-date"></div>
       <div class="fg2"><label>お客様名</label><input type="text" id="e-name"></div>
@@ -281,20 +310,45 @@ ALTER TABLE paint_records DISABLE ROW LEVEL SECURITY;</div>
       <div class="fg2 full"><label>調色内容</label><textarea id="e-mix"></textarea></div>
     </div>
     <div style="display:flex;gap:8px">
-      <button class="btn-action" id="save-btn" onclick="saveEdit()">保存する</button>
-      <button class="btn-sec" onclick="closeModal()">キャンセル</button>
+      <button class="btn btn-action" id="save-btn" onclick="saveEdit()">保存する</button>
+      <button class="btn btn-sec" onclick="closeModal('edit-modal')">キャンセル</button>
     </div>
     <div id="edit-msg" class="msg"></div>
   </div>
 </div>
 
+<!-- ユーザー 追加/編集モーダル -->
+<div class="modal-bg" id="user-modal">
+  <div class="modal">
+    <div class="modal-hd"><h2 id="user-modal-title">ユーザーを追加</h2><button class="btn-icon" onclick="closeModal('user-modal')"><i class="ti ti-x"></i></button></div>
+    <div class="form-grid">
+      <div class="fg2"><label>従業員コード *</label><input type="text" id="u-code" placeholder="例：002"></div>
+      <div class="fg2"><label>従業員名 *</label><input type="text" id="u-name" placeholder="氏名"></div>
+      <div class="fg2"><label>権限 *</label>
+        <select id="u-role">
+          <option value="user">一般ユーザー</option>
+          <option value="admin">管理者</option>
+        </select>
+      </div>
+      <div class="fg2"><label id="u-pw-label">パスワード *</label><input type="password" id="u-pw" placeholder="パスワードを入力"></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-action" id="user-save-btn" onclick="saveUser()">保存する</button>
+      <button class="btn btn-sec" onclick="closeModal('user-modal')">キャンセル</button>
+    </div>
+    <div id="user-modal-msg" class="msg"></div>
+  </div>
+</div>
+
 <script>
 const STORAGE_KEY='paint_db_cfg';
-const PASSWORD='admin';
-let sb=null,editingId=null,pendingCsv=[],currentRows=[];
-let faceDetected=false,videoStream=null,faceCheckInterval=null;
+let sb=null, currentUser=null, editingRecordId=null, editingUserId=null, pendingCsv=[], currentRows=[];
+let faceDetected=false, videoStream=null, faceCheckInterval=null;
 
+// ===== Config =====
 function loadConfig(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')}catch{return null}}
+function resetConfig(){localStorage.removeItem(STORAGE_KEY);sb=null;showScreen('screen-config')}
+function initSb(cfg){sb=window.supabase.createClient(cfg.url,cfg.key)}
 
 async function saveConfig(){
   const url=document.getElementById('cfg-url').value.trim();
@@ -306,7 +360,7 @@ async function saveConfig(){
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 接続確認中...';
   try{
     sb=window.supabase.createClient(url,key);
-    const{error}=await sb.from('paint_records').select('id').limit(1);
+    const{error}=await sb.from('user_master').select('id').limit(1);
     if(error&&error.code!=='PGRST116'){
       msg.textContent='接続エラー: '+error.message;msg.className='config-msg err';
       btn.disabled=false;btn.innerHTML='<i class="ti ti-plug"></i> 接続して続ける';
@@ -321,26 +375,21 @@ async function saveConfig(){
   }
 }
 
-function resetConfig(){localStorage.removeItem(STORAGE_KEY);sb=null;showScreen('screen-config')}
-
-function initSb(cfg){sb=window.supabase.createClient(cfg.url,cfg.key)}
-
+// ===== Screen =====
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
-
 function goToLogin(){showScreen('screen-login');startCamera()}
 
+// ===== Camera =====
 async function startCamera(){
   try{
     const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:320,height:240}});
     videoStream=stream;
-    const v=document.getElementById('login-video');
-    v.srcObject=stream;await v.play();startFaceCheck();
+    const v=document.getElementById('login-video');v.srcObject=stream;await v.play();startFaceCheck();
   }catch(e){
-    document.getElementById('login-msg').textContent='カメラにアクセスできません。パスワードのみでログインできます。';
+    document.getElementById('login-msg').textContent='カメラにアクセスできません。コードとパスワードのみでログインできます。';
     faceDetected=true;checkLoginReady();
   }
 }
-
 function startFaceCheck(){
   const v=document.getElementById('login-video'),c=document.getElementById('cam-canvas'),ctx=c.getContext('2d');
   faceCheckInterval=setInterval(()=>{
@@ -348,28 +397,45 @@ function startFaceCheck(){
     c.width=v.videoWidth||160;c.height=v.videoHeight||120;
     ctx.drawImage(v,0,0,c.width,c.height);
     const img=ctx.getImageData(0,0,c.width,c.height),d=img.data;
-    let skinPx=0;
-    for(let i=0;i<d.length;i+=16){const r=d[i],g=d[i+1],b=d[i+2];if(r>60&&g>40&&b>20&&r>g&&r>b&&r-g>10&&r-b>10&&r<250)skinPx++}
-    faceDetected=skinPx/(d.length/16)>0.04;
+    let sk=0;
+    for(let i=0;i<d.length;i+=16){const r=d[i],g=d[i+1],b=d[i+2];if(r>60&&g>40&&b>20&&r>g&&r>b&&r-g>10&&r-b>10&&r<250)sk++}
+    faceDetected=sk/(d.length/16)>0.04;
     const ind=document.getElementById('face-ind');
     ind.textContent=faceDetected?'顔を検出':'顔未検出';
     ind.className='face-indicator '+(faceDetected?'detected':'none');
     checkLoginReady();
   },500);
 }
-
-function checkLoginReady(){document.getElementById('login-btn').disabled=!(faceDetected&&document.getElementById('pw-input').value.length>0)}
-
+function checkLoginReady(){
+  const code=document.getElementById('emp-code').value.trim();
+  const pw=document.getElementById('pw-input').value;
+  document.getElementById('login-btn').disabled=!(faceDetected&&code&&pw);
+}
 function stopCamera(){clearInterval(faceCheckInterval);if(videoStream)videoStream.getTracks().forEach(t=>t.stop())}
 
-function doLogin(){
-  if(document.getElementById('pw-input').value!==PASSWORD){document.getElementById('login-msg').textContent='パスワードが正しくありません';return}
-  if(!faceDetected){document.getElementById('login-msg').textContent='顔が検出されていません';return}
-  stopCamera();showScreen('screen-app');doSearch();
+// ===== Login =====
+async function doLogin(){
+  const code=document.getElementById('emp-code').value.trim();
+  const pw=document.getElementById('pw-input').value;
+  const msg=document.getElementById('login-msg');
+  if(!faceDetected){msg.textContent='顔が検出されていません';return}
+  const btn=document.getElementById('login-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 確認中...';
+  const{data,error}=await sb.from('user_master').select('*').eq('employee_code',code).eq('password',pw).single();
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-login"></i> ログイン';
+  if(error||!data){msg.textContent='従業員コードまたはパスワードが正しくありません';return}
+  currentUser=data;
+  stopCamera();
+  document.getElementById('user-info').textContent=data.employee_name+'（'+(data.role==='admin'?'管理者':'一般')+'）';
+  document.getElementById('tab-users-btn').style.display=data.role==='admin'?'':'none';
+  showScreen('screen-app');
+  doSearch();
 }
 
 function doLogout(){
+  currentUser=null;
   showScreen('screen-login');
+  document.getElementById('emp-code').value='';
   document.getElementById('pw-input').value='';
   document.getElementById('login-msg').textContent='';
   faceDetected=false;
@@ -379,8 +445,22 @@ function doLogout(){
   startCamera();
 }
 
-function fmt(d){return d?d.replace(/-/g,'/'):''}
+// ===== Tab =====
+function switchTab(name){
+  const tabs=['search','add','csv','users'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',tabs[i]===name));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='search')doSearch();
+  if(name==='users')loadUsers();
+}
 
+// ===== Utils =====
+function fmt(d){return d?d.replace(/-/g,'/'):''}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function showMsg(id,t,cls){const el=document.getElementById(id);el.textContent=t;el.className='msg '+cls;if(cls==='ok')setTimeout(()=>el.textContent='',4000)}
+
+// ===== 塗装記録 =====
 async function doSearch(){
   document.getElementById('tbl-loading').style.display='block';
   document.getElementById('main-table').style.display='none';
@@ -406,14 +486,12 @@ async function doSearch(){
   if(col)rows=rows.filter(r=>(r.color_no1||'').toLowerCase().includes(col.toLowerCase())||(r.color_no2||'').toLowerCase().includes(col.toLowerCase()));
   currentRows=rows;refreshTypes(rows);renderTable(rows);
 }
-
 function refreshTypes(rows){
   const unique=[...new Set(rows.map(r=>r.paint_type).filter(Boolean))];
   const sel=document.getElementById('s-type'),v=sel.value;
   sel.innerHTML='<option value="">すべて</option>';
   unique.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;if(t===v)o.selected=true;sel.appendChild(o)});
 }
-
 function renderTable(rows){
   const tb=document.getElementById('result-body'),em=document.getElementById('empty-msg'),tbl=document.getElementById('main-table');
   document.getElementById('result-count').textContent=rows.length+' 件';
@@ -429,7 +507,6 @@ function renderTable(rows){
       <button class="btn-icon del" onclick="delRecord(${r.id})"><i class="ti ti-trash"></i></button>
     </div></td></tr>`).join('');
 }
-
 function clearSearch(){['s-name','s-car','s-part','s-color','s-df','s-dt'].forEach(id=>document.getElementById(id).value='');document.getElementById('s-type').value='';doSearch()}
 
 async function addRecord(){
@@ -451,13 +528,12 @@ async function addRecord(){
   if(error){showMsg('form-msg','登録エラー: '+error.message,'err');return}
   showMsg('form-msg','登録しました！','ok');clearForm();
 }
-
 function clearForm(){['f-date','f-name','f-car','f-regno','f-part','f-type','f-c1','f-c2','f-mix'].forEach(id=>document.getElementById(id).value='')}
 
 async function openEdit(id){
   const{data,error}=await sb.from('paint_records').select('*').eq('id',id).single();
   if(error||!data){alert('取得エラー');return}
-  editingId=id;
+  editingRecordId=id;
   document.getElementById('e-date').value=data.registered_date||'';
   document.getElementById('e-name').value=data.customer_name||'';
   document.getElementById('e-car').value=data.car_name||'';
@@ -470,7 +546,6 @@ async function openEdit(id){
   document.getElementById('edit-msg').textContent='';
   document.getElementById('edit-modal').classList.add('open');
 }
-
 async function saveEdit(){
   const btn=document.getElementById('save-btn');
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 保存中...';
@@ -485,26 +560,16 @@ async function saveEdit(){
     color_no2:document.getElementById('e-c2').value.trim(),
     mix_detail:document.getElementById('e-mix').value.trim(),
     updated_at:new Date().toISOString(),
-  }).eq('id',editingId);
+  }).eq('id',editingRecordId);
   btn.disabled=false;btn.innerHTML='保存する';
   if(error){showMsg('edit-msg','保存エラー: '+error.message,'err');return}
-  closeModal();doSearch();
+  closeModal('edit-modal');doSearch();
 }
-
 async function delRecord(id){
   if(!confirm('このデータを削除しますか？'))return;
   const{error}=await sb.from('paint_records').delete().eq('id',id);
   if(error){alert('削除エラー: '+error.message);return}
   doSearch();
-}
-
-function closeModal(){document.getElementById('edit-modal').classList.remove('open')}
-
-function switchTab(name){
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['search','add','csv'][i]===name));
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  if(name==='search')doSearch();
 }
 
 function exportCSV(){
@@ -514,9 +579,81 @@ function exportCSV(){
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='塗装管理データ.csv';a.click();
 }
 
+// ===== ユーザー管理 =====
+async function loadUsers(){
+  document.getElementById('users-loading').style.display='block';
+  document.getElementById('users-table').style.display='none';
+  document.getElementById('users-empty').style.display='none';
+  const{data,error}=await sb.from('user_master').select('*').order('employee_code');
+  document.getElementById('users-loading').style.display='none';
+  if(error){alert('取得エラー: '+error.message);return}
+  const rows=data||[];
+  if(!rows.length){document.getElementById('users-empty').style.display='block';return}
+  document.getElementById('users-table').style.display='table';
+  document.getElementById('users-body').innerHTML=rows.map(r=>`<tr>
+    <td><span class="badge">${r.employee_code}</span></td>
+    <td>${r.employee_name}</td>
+    <td><span class="badge ${r.role==='admin'?'badge-admin':'badge-user'}">${r.role==='admin'?'管理者':'一般'}</span></td>
+    <td>${fmt(r.created_at?r.created_at.slice(0,10):'')}</td>
+    <td><div class="act-btns">
+      <button class="btn-icon" onclick="openUserModal(${r.id})"><i class="ti ti-edit"></i></button>
+      ${r.employee_code!=='001'?`<button class="btn-icon del" onclick="delUser(${r.id})"><i class="ti ti-trash"></i></button>`:''}
+    </div></td></tr>`).join('');
+}
+
+function openUserModal(id){
+  editingUserId=id;
+  document.getElementById('user-modal-title').textContent=id?'ユーザーを編集':'ユーザーを追加';
+  document.getElementById('u-pw-label').textContent=id?'パスワード（変更する場合のみ）':'パスワード *';
+  document.getElementById('u-code').value='';
+  document.getElementById('u-name').value='';
+  document.getElementById('u-role').value='user';
+  document.getElementById('u-pw').value='';
+  document.getElementById('user-modal-msg').textContent='';
+  if(id){
+    sb.from('user_master').select('*').eq('id',id).single().then(({data})=>{
+      if(data){
+        document.getElementById('u-code').value=data.employee_code;
+        document.getElementById('u-name').value=data.employee_name;
+        document.getElementById('u-role').value=data.role;
+      }
+    });
+  }
+  document.getElementById('user-modal').classList.add('open');
+}
+
+async function saveUser(){
+  const code=document.getElementById('u-code').value.trim();
+  const name=document.getElementById('u-name').value.trim();
+  const role=document.getElementById('u-role').value;
+  const pw=document.getElementById('u-pw').value;
+  if(!code||!name){showMsg('user-modal-msg','従業員コードと名前は必須です','err');return}
+  if(!editingUserId&&!pw){showMsg('user-modal-msg','パスワードは必須です','err');return}
+  const btn=document.getElementById('user-save-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 保存中...';
+  let error;
+  if(editingUserId){
+    const upd={employee_code:code,employee_name:name,role};
+    if(pw)upd.password=pw;
+    ({error}=await sb.from('user_master').update(upd).eq('id',editingUserId));
+  }else{
+    ({error}=await sb.from('user_master').insert([{employee_code:code,employee_name:name,role,password:pw}]));
+  }
+  btn.disabled=false;btn.innerHTML='保存する';
+  if(error){showMsg('user-modal-msg','エラー: '+error.message,'err');return}
+  closeModal('user-modal');loadUsers();showMsg('users-msg',editingUserId?'更新しました':'追加しました','ok');
+}
+
+async function delUser(id){
+  if(!confirm('このユーザーを削除しますか？'))return;
+  const{error}=await sb.from('user_master').delete().eq('id',id);
+  if(error){alert('削除エラー: '+error.message);return}
+  loadUsers();
+}
+
+// ===== CSV =====
 function handleCsvFile(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>parseCsv(e.target.result);r.readAsText(f,'UTF-8');input.value=''}
 function handleCsvDrop(e){const f=e.dataTransfer.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>parseCsv(ev.target.result);r.readAsText(f,'UTF-8')}
-
 function parseCsv(text){
   const lines=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n').filter(l=>l.trim());
   if(lines.length<2){showMsg('csv-msg','データ行がありません','err');return}
@@ -527,20 +664,16 @@ function parseCsv(text){
   if(idx.customer_name===undefined){showMsg('csv-msg','「お客様名」列が見つかりません','err');return}
   pendingCsv=[];
   for(let i=1;i<lines.length;i++){
-    const cols=csvRow(lines[i]);
-    const g=k=>idx[k]!==undefined?(cols[idx[k]]||'').trim():'';
+    const cols=csvRow(lines[i]);const g=k=>idx[k]!==undefined?(cols[idx[k]]||'').trim():'';
     const name=g('customer_name');if(!name)continue;
     const rd=g('registered_date');
     pendingCsv.push({customer_name:name,registered_date:rd?rd.replace(/\//g,'-'):null,car_name:g('car_name'),reg_number:g('reg_number'),paint_area:g('paint_area'),paint_type:g('paint_type'),color_no1:g('color_no1'),color_no2:g('color_no2'),mix_detail:g('mix_detail')});
   }
   if(!pendingCsv.length){showMsg('csv-msg','取り込み可能なデータがありません','err');return}
-  showCsvPreview();
-  showMsg('csv-msg',pendingCsv.length+' 件を確認しました。インポートを実行しますか？','ok');
+  showCsvPreview();showMsg('csv-msg',pendingCsv.length+' 件を確認しました。インポートを実行しますか？','ok');
   document.getElementById('csv-import-btn').style.display='block';
 }
-
 function csvRow(line){const res=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++}else inQ=!inQ}else if(c===','&&!inQ){res.push(cur);cur=''}else cur+=c}res.push(cur);return res}
-
 function showCsvPreview(){
   const max=Math.min(pendingCsv.length,5);
   const cols=['登録日','お客様名','車名','塗装箇所','塗料区分','色番号１','色番号２'];
@@ -551,7 +684,6 @@ function showCsvPreview(){
   html+='</tbody></table></div>';
   document.getElementById('csv-preview').innerHTML=html;
 }
-
 async function importCsv(){
   const btn=document.getElementById('csv-exec-btn');
   btn.disabled=true;btn.innerHTML='<span class="spinner"></span> インポート中...';
@@ -560,12 +692,9 @@ async function importCsv(){
   if(error){showMsg('csv-msg','インポートエラー: '+error.message,'err');return}
   const count=pendingCsv.length;cancelCsv();showMsg('csv-msg',count+' 件をインポートしました！','ok');
 }
-
 function cancelCsv(){pendingCsv=[];document.getElementById('csv-preview').innerHTML='';document.getElementById('csv-import-btn').style.display='none';document.getElementById('csv-msg').textContent=''}
 
-function showMsg(id,t,cls){const el=document.getElementById(id);el.textContent=t;el.className='msg '+cls;if(cls==='ok')setTimeout(()=>el.textContent='',4000)}
-
-// 起動
+// ===== 起動 =====
 const cfg=loadConfig();
 if(cfg){initSb(cfg);goToLogin()}
 </script>
