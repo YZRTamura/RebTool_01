@@ -5,15 +5,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>塗装管理システム</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;background:#f5f5f5;color:#1a1a1a}
 .screen{display:none}.screen.active{display:block}
-
-/* Login */
+.config-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:1rem}
+.config-card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:1.75rem;width:min(480px,100%);box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.config-card h2{font-size:18px;font-weight:600;margin-bottom:6px}
+.config-card p{font-size:13px;color:#666;margin-bottom:1.25rem}
+.tip{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:10px 14px;font-size:12px;color:#0369a1;margin-bottom:1rem;line-height:1.7}
+.tip code{font-family:monospace;background:#e0f2fe;padding:1px 5px;border-radius:4px;font-size:11px}
+.sql-box{background:#1e1e2e;color:#cdd6f4;border-radius:8px;padding:12px;font-family:monospace;font-size:11px;margin-bottom:1rem;white-space:pre;overflow-x:auto;line-height:1.6}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fg label{font-size:12px;color:#666;font-weight:500}
+.fg input{padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;outline:none;font-family:monospace}
+.fg input:focus{border-color:#555}
+.btn-primary{width:100%;background:#111;color:#fff;border:none;padding:10px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-primary:hover{background:#333}
+.btn-primary:disabled{background:#aaa;cursor:not-allowed}
+.config-msg{font-size:12px;margin-top:8px;min-height:16px;text-align:center}
+.config-msg.err{color:#dc2626}.config-msg.ok{color:#059669}
 .login-wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:1rem}
 .login-card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:1.5rem;width:min(400px,100%);box-shadow:0 2px 12px rgba(0,0,0,.08)}
-.login-card h2{font-size:18px;font-weight:600;margin-bottom:1.25rem;text-align:center;color:#111}
+.login-card h2{font-size:18px;font-weight:600;margin-bottom:1.25rem;text-align:center}
 .cam-box{position:relative;width:100%;aspect-ratio:4/3;background:#111;border-radius:8px;overflow:hidden;margin-bottom:1rem}
 #login-video{width:100%;height:100%;object-fit:cover}
 #cam-canvas{display:none}
@@ -24,31 +39,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .form-group label{font-size:12px;color:#666;font-weight:500}
 .form-group input{width:100%;padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none}
 .form-group input:focus{border-color:#555}
-.btn-primary{width:100%;background:#111;color:#fff;border:none;padding:10px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:500}
-.btn-primary:hover{background:#333}
-.btn-primary:disabled{background:#aaa;cursor:not-allowed}
+.login-btn{width:100%;background:#111;color:#fff;border:none;padding:10px;border-radius:8px;font-size:14px;cursor:pointer;font-weight:500}
+.login-btn:hover{background:#333}
+.login-btn:disabled{background:#aaa;cursor:not-allowed}
 .login-msg{font-size:12px;text-align:center;color:#dc2626;min-height:18px;margin-bottom:6px}
-
-/* App */
 .app-wrap{max-width:1100px;margin:0 auto;padding:1.25rem}
-.topbar{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem}
+.topbar{display:flex;align-items:center;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap}
 .topbar h1{font-size:20px;font-weight:600;flex:1}
+.db-badge{font-size:11px;background:#d1fae5;color:#065f46;padding:3px 8px;border-radius:20px;font-weight:600}
 .btn-sm{background:#fff;border:1px solid #ddd;padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;color:#333}
 .btn-sm:hover{background:#f5f5f5}
 .tabs{display:flex;gap:2px;border-bottom:1px solid #e5e5e5;margin-bottom:1.25rem}
 .tab{padding:9px 18px;font-size:13px;cursor:pointer;border:none;background:none;color:#888;border-bottom:2px solid transparent;margin-bottom:-1px}
 .tab.active{color:#111;border-bottom-color:#111;font-weight:600}
 .section{display:none}.section.active{display:block}
-
-/* Search */
 .search-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:8px;margin-bottom:10px}
 .search-grid>div>label{font-size:11px;color:#666;display:block;margin-bottom:4px;font-weight:500}
 .search-grid input,.search-grid select{width:100%;padding:7px 9px;border:1px solid #ddd;border-radius:7px;font-size:13px;outline:none;background:#fff}
-.search-grid input:focus,.search-grid select:focus{border-color:#555}
 .search-actions{display:flex;gap:8px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
-.btn-action{background:#111;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500}
+.btn-action{background:#111;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:5px}
 .btn-action:hover{background:#333}
-.btn-sec{background:#fff;border:1px solid #ddd;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;color:#333}
+.btn-action:disabled{background:#aaa;cursor:not-allowed}
+.btn-sec{background:#fff;border:1px solid #ddd;padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;color:#333;display:inline-flex;align-items:center;gap:5px}
 .btn-sec:hover{background:#f5f5f5}
 .result-count{font-size:12px;color:#888;margin-left:auto}
 .table-wrap{overflow-x:auto;border:1px solid #e5e5e5;border-radius:10px;background:#fff}
@@ -62,28 +74,22 @@ tr:hover td{background:#fafafa}
 .btn-icon{background:none;border:1px solid #e5e5e5;border-radius:6px;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#888;font-size:14px}
 .btn-icon:hover{background:#f5f5f5;color:#333}
 .btn-icon.del:hover{background:#fee2e2;color:#dc2626;border-color:#fca5a5}
-
-/* Form */
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-bottom:1.25rem}
-.fg{display:flex;flex-direction:column;gap:5px}
-.fg label{font-size:12px;color:#666;font-weight:500}
-.fg input,.fg select,.fg textarea{padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;outline:none;font-family:inherit}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#555}
-.fg textarea{height:72px;resize:vertical}
+.fg2{display:flex;flex-direction:column;gap:5px}
+.fg2 label{font-size:12px;color:#666;font-weight:500}
+.fg2 input,.fg2 textarea{padding:8px 10px;border:1px solid #ddd;border-radius:8px;font-size:13px;outline:none;font-family:inherit}
+.fg2 input:focus,.fg2 textarea:focus{border-color:#555}
+.fg2 textarea{height:72px;resize:vertical}
 .full{grid-column:1/-1}
 .empty{padding:2.5rem;text-align:center;color:#aaa;font-size:13px}
+.loading{color:#888;font-size:13px;padding:1.5rem;text-align:center}
 .msg{font-size:12px;margin-top:8px;min-height:16px}
-.msg.ok{color:#059669}
-.msg.err{color:#dc2626}
-
-/* Modal */
+.msg.ok{color:#059669}.msg.err{color:#dc2626}
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;align-items:center;justify-content:center;padding:1rem}
 .modal-bg.open{display:flex}
 .modal{background:#fff;border-radius:12px;border:1px solid #e5e5e5;padding:1.5rem;width:min(580px,100%);max-height:88vh;overflow-y:auto}
 .modal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
 .modal-hd h2{font-size:16px;font-weight:600}
-
-/* CSV */
 .csv-zone{border:2px dashed #ddd;border-radius:10px;padding:2rem;text-align:center;cursor:pointer;margin-bottom:1rem;transition:background .15s;background:#fff}
 .csv-zone:hover,.csv-zone.drag{background:#f5f5f5}
 .csv-zone i{font-size:32px;color:#aaa;display:block;margin-bottom:8px}
@@ -91,13 +97,60 @@ tr:hover td{background:#fafafa}
 .csv-zone small{font-size:11px;color:#aaa}
 .preview-table{max-height:200px;overflow-y:auto;border:1px solid #e5e5e5;border-radius:8px;margin-bottom:1rem}
 .preview-table table{font-size:11px}
-.tip{background:#f9f9f9;border-radius:8px;padding:10px 14px;font-size:12px;color:#666;margin-bottom:1rem;border:1px solid #eee}
-.tip code{font-family:monospace;font-size:11px;background:#ececec;padding:1px 5px;border-radius:4px}
+.infotip{background:#f9f9f9;border-radius:8px;padding:10px 14px;font-size:12px;color:#666;margin-bottom:1rem;border:1px solid #eee}
+.infotip code{font-family:monospace;font-size:11px;background:#ececec;padding:1px 5px;border-radius:4px}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 
-<div id="screen-login" class="screen active">
+<!-- 設定画面 -->
+<div id="screen-config" class="screen active">
+  <div class="config-wrap">
+    <div class="config-card">
+      <h2><i class="ti ti-database" style="vertical-align:-2px;margin-right:6px"></i>Supabase 接続設定</h2>
+      <p>初回のみ設定が必要です。入力内容はブラウザに保存されます。</p>
+      <div class="tip">
+        <b>① <a href="https://supabase.com" target="_blank">supabase.com</a> でプロジェクト作成</b><br>
+        <b>② SQL Editor で下記を実行してテーブルを作成</b>
+      </div>
+      <div class="sql-box">CREATE TABLE paint_records (
+  id          bigserial PRIMARY KEY,
+  registered_date date,
+  customer_name   text NOT NULL,
+  car_name        text,
+  reg_number      text,
+  paint_area      text,
+  paint_type      text,
+  color_no1       text,
+  color_no2       text,
+  mix_detail      text,
+  updated_at      timestamptz DEFAULT now()
+);
+-- RLS を無効化（社内利用向け簡易設定）
+ALTER TABLE paint_records DISABLE ROW LEVEL SECURITY;</div>
+      <div class="tip">
+        <b>③ Settings → API から URL と anon key をコピー</b>
+      </div>
+      <div class="fg">
+        <label>Project URL</label>
+        <input type="text" id="cfg-url" placeholder="https://xxxxxxxxxx.supabase.co">
+      </div>
+      <div class="fg">
+        <label>Anon Public Key</label>
+        <input type="text" id="cfg-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6...">
+      </div>
+      <div class="config-msg" id="cfg-msg"></div>
+      <button class="btn-primary" id="cfg-btn" onclick="saveConfig()">
+        <i class="ti ti-plug"></i> 接続して続ける
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ログイン画面 -->
+<div id="screen-login" class="screen">
   <div class="login-wrap">
     <div class="login-card">
       <h2><i class="ti ti-color-swatch" style="vertical-align:-2px;margin-right:6px"></i>塗装管理システム</h2>
@@ -111,19 +164,21 @@ tr:hover td{background:#fafafa}
         <input type="password" id="pw-input" placeholder="パスワードを入力" oninput="checkLoginReady()" onkeydown="if(event.key==='Enter')doLogin()">
       </div>
       <div class="login-msg" id="login-msg"></div>
-      <button class="btn-primary" id="login-btn" disabled onclick="doLogin()">
+      <button class="login-btn" id="login-btn" disabled onclick="doLogin()">
         <i class="ti ti-login"></i> ログイン
       </button>
       <p style="font-size:11px;color:#aaa;text-align:center;margin-top:12px">デモ用パスワード: <b>admin</b></p>
     </div>
-    <p style="font-size:11px;color:#aaa">※ カメラへのアクセス許可が必要です</p>
+    <button style="font-size:11px;color:#aaa;background:none;border:none;cursor:pointer;text-decoration:underline" onclick="resetConfig()">接続設定を変更する</button>
   </div>
 </div>
 
+<!-- アプリ画面 -->
 <div id="screen-app" class="screen">
   <div class="app-wrap">
     <div class="topbar">
       <h1><i class="ti ti-color-swatch" style="font-size:20px;vertical-align:-2px;margin-right:8px"></i>塗装管理データベース</h1>
+      <span class="db-badge"><i class="ti ti-database" style="font-size:11px"></i> Supabase</span>
       <button class="btn-sm" onclick="doLogout()"><i class="ti ti-logout"></i> ログアウト</button>
     </div>
     <div class="tabs">
@@ -149,7 +204,8 @@ tr:hover td{background:#fafafa}
         <span class="result-count" id="result-count"></span>
       </div>
       <div class="table-wrap">
-        <table>
+        <div id="tbl-loading" class="loading"><i class="ti ti-loader" style="animation:spin .8s linear infinite;display:inline-block"></i> 読み込み中...</div>
+        <table id="main-table" style="display:none">
           <thead><tr>
             <th>ID</th><th>登録日</th><th>お客様名</th><th>車名</th><th>登録番号</th>
             <th>塗装箇所</th><th>塗料区分</th><th>色番号１</th><th>色番号２</th><th>調色内容</th><th>操作</th>
@@ -164,28 +220,28 @@ tr:hover td{background:#fafafa}
 
     <div id="tab-add" class="section">
       <div class="form-grid">
-        <div class="fg"><label>登録日 *</label><input type="date" id="f-date"></div>
-        <div class="fg"><label>お客様名 *</label><input type="text" id="f-name" placeholder="お客様名"></div>
-        <div class="fg"><label>車名</label><input type="text" id="f-car" placeholder="車名"></div>
-        <div class="fg"><label>登録番号</label><input type="text" id="f-regno" placeholder="ナンバー"></div>
-        <div class="fg"><label>塗装箇所</label><input type="text" id="f-part" placeholder="例：ボンネット"></div>
-        <div class="fg"><label>塗料区分</label><input type="text" id="f-type" placeholder="塗料区分"></div>
-        <div class="fg"><label>色番号１</label><input type="text" id="f-c1"></div>
-        <div class="fg"><label>色番号２</label><input type="text" id="f-c2"></div>
-        <div class="fg full"><label>調色内容</label><textarea id="f-mix" placeholder="調色の詳細"></textarea></div>
+        <div class="fg2"><label>登録日 *</label><input type="date" id="f-date"></div>
+        <div class="fg2"><label>お客様名 *</label><input type="text" id="f-name" placeholder="お客様名"></div>
+        <div class="fg2"><label>車名</label><input type="text" id="f-car" placeholder="車名"></div>
+        <div class="fg2"><label>登録番号</label><input type="text" id="f-regno" placeholder="ナンバー"></div>
+        <div class="fg2"><label>塗装箇所</label><input type="text" id="f-part" placeholder="例：ボンネット"></div>
+        <div class="fg2"><label>塗料区分</label><input type="text" id="f-type" placeholder="塗料区分"></div>
+        <div class="fg2"><label>色番号１</label><input type="text" id="f-c1"></div>
+        <div class="fg2"><label>色番号２</label><input type="text" id="f-c2"></div>
+        <div class="fg2 full"><label>調色内容</label><textarea id="f-mix" placeholder="調色の詳細"></textarea></div>
       </div>
       <div style="display:flex;gap:8px">
-        <button class="btn-action" onclick="addRecord()"><i class="ti ti-plus"></i> 登録する</button>
+        <button class="btn-action" id="add-btn" onclick="addRecord()"><i class="ti ti-plus"></i> 登録する</button>
         <button class="btn-sec" onclick="clearForm()">クリア</button>
       </div>
       <div id="form-msg" class="msg"></div>
     </div>
 
     <div id="tab-csv" class="section">
-      <div class="tip">
+      <div class="infotip">
         <b>CSVフォーマット（1行目はヘッダー行）</b><br>
         <code>登録日,お客様名,車名,登録番号,塗装箇所,塗料区分,色番号１,色番号２,調色内容</code><br>
-        <span style="margin-top:4px;display:block">日付形式: <code>2026/01/27</code> または <code>2026-01-27</code> &nbsp; Excelは「CSV UTF-8」で保存してください。</span>
+        <span style="margin-top:4px;display:block">日付: <code>2026/01/27</code> または <code>2026-01-27</code>　Excelは「CSV UTF-8」で保存してください。</span>
       </div>
       <div class="csv-zone" id="csv-zone" onclick="document.getElementById('csv-file').click()"
         ondragover="event.preventDefault();this.classList.add('drag')"
@@ -199,13 +255,14 @@ tr:hover td{background:#fafafa}
       <div id="csv-preview"></div>
       <div id="csv-msg" class="msg"></div>
       <div id="csv-import-btn" style="display:none;margin-top:10px">
-        <button class="btn-action" onclick="importCsv()"><i class="ti ti-file-import"></i> インポート実行</button>
+        <button class="btn-action" id="csv-exec-btn" onclick="importCsv()"><i class="ti ti-file-import"></i> インポート実行</button>
         <button class="btn-sec" style="margin-left:8px" onclick="cancelCsv()">キャンセル</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- 編集モーダル -->
 <div class="modal-bg" id="edit-modal">
   <div class="modal">
     <div class="modal-hd">
@@ -213,41 +270,71 @@ tr:hover td{background:#fafafa}
       <button class="btn-icon" onclick="closeModal()"><i class="ti ti-x"></i></button>
     </div>
     <div class="form-grid">
-      <div class="fg"><label>登録日</label><input type="date" id="e-date"></div>
-      <div class="fg"><label>お客様名</label><input type="text" id="e-name"></div>
-      <div class="fg"><label>車名</label><input type="text" id="e-car"></div>
-      <div class="fg"><label>登録番号</label><input type="text" id="e-regno"></div>
-      <div class="fg"><label>塗装箇所</label><input type="text" id="e-part"></div>
-      <div class="fg"><label>塗料区分</label><input type="text" id="e-type"></div>
-      <div class="fg"><label>色番号１</label><input type="text" id="e-c1"></div>
-      <div class="fg"><label>色番号２</label><input type="text" id="e-c2"></div>
-      <div class="fg full"><label>調色内容</label><textarea id="e-mix"></textarea></div>
+      <div class="fg2"><label>登録日</label><input type="date" id="e-date"></div>
+      <div class="fg2"><label>お客様名</label><input type="text" id="e-name"></div>
+      <div class="fg2"><label>車名</label><input type="text" id="e-car"></div>
+      <div class="fg2"><label>登録番号</label><input type="text" id="e-regno"></div>
+      <div class="fg2"><label>塗装箇所</label><input type="text" id="e-part"></div>
+      <div class="fg2"><label>塗料区分</label><input type="text" id="e-type"></div>
+      <div class="fg2"><label>色番号１</label><input type="text" id="e-c1"></div>
+      <div class="fg2"><label>色番号２</label><input type="text" id="e-c2"></div>
+      <div class="fg2 full"><label>調色内容</label><textarea id="e-mix"></textarea></div>
     </div>
     <div style="display:flex;gap:8px">
-      <button class="btn-action" onclick="saveEdit()">保存する</button>
+      <button class="btn-action" id="save-btn" onclick="saveEdit()">保存する</button>
       <button class="btn-sec" onclick="closeModal()">キャンセル</button>
     </div>
+    <div id="edit-msg" class="msg"></div>
   </div>
 </div>
 
 <script>
-let db=[
-  {id:1,date:'2026-01-27',name:'あああああ',car:'いいいいい',regno:'',part:'ううううう',type:'えええええ',c1:'o',c2:'',mix:'',updated:'2026-01-27'},
-  {id:2,date:'2026-01-27',name:'あああああ',car:'いいいいい',regno:'',part:'ううううう',type:'えええええ',c1:'o',c2:'ka',mix:'ki',updated:'2026-01-27'},
-  {id:3,date:'2026-01-27',name:'１',car:'２',regno:'',part:'３',type:'４',c1:'5',c2:'6',mix:'7',updated:'2026-01-27'}
-];
-let nextId=4,editingId=null,pendingCsv=[];
+const STORAGE_KEY='paint_db_cfg';
 const PASSWORD='admin';
+let sb=null,editingId=null,pendingCsv=[],currentRows=[];
 let faceDetected=false,videoStream=null,faceCheckInterval=null;
+
+function loadConfig(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')}catch{return null}}
+
+async function saveConfig(){
+  const url=document.getElementById('cfg-url').value.trim();
+  const key=document.getElementById('cfg-key').value.trim();
+  const msg=document.getElementById('cfg-msg');
+  const btn=document.getElementById('cfg-btn');
+  if(!url||!key){msg.textContent='URLとKeyを入力してください';msg.className='config-msg err';return}
+  if(!url.startsWith('https://')){msg.textContent='URLはhttps://で始まる必要があります';msg.className='config-msg err';return}
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 接続確認中...';
+  try{
+    sb=window.supabase.createClient(url,key);
+    const{error}=await sb.from('paint_records').select('id').limit(1);
+    if(error&&error.code!=='PGRST116'){
+      msg.textContent='接続エラー: '+error.message;msg.className='config-msg err';
+      btn.disabled=false;btn.innerHTML='<i class="ti ti-plug"></i> 接続して続ける';
+    }else{
+      localStorage.setItem(STORAGE_KEY,JSON.stringify({url,key}));
+      msg.textContent='接続成功！';msg.className='config-msg ok';
+      setTimeout(goToLogin,600);
+    }
+  }catch(e){
+    msg.textContent='エラー: '+e.message;msg.className='config-msg err';
+    btn.disabled=false;btn.innerHTML='<i class="ti ti-plug"></i> 接続して続ける';
+  }
+}
+
+function resetConfig(){localStorage.removeItem(STORAGE_KEY);sb=null;showScreen('screen-config')}
+
+function initSb(cfg){sb=window.supabase.createClient(cfg.url,cfg.key)}
+
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+
+function goToLogin(){showScreen('screen-login');startCamera()}
 
 async function startCamera(){
   try{
     const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:320,height:240}});
     videoStream=stream;
     const v=document.getElementById('login-video');
-    v.srcObject=stream;
-    await v.play();
-    startFaceCheck();
+    v.srcObject=stream;await v.play();startFaceCheck();
   }catch(e){
     document.getElementById('login-msg').textContent='カメラにアクセスできません。パスワードのみでログインできます。';
     faceDetected=true;checkLoginReady();
@@ -255,54 +342,34 @@ async function startCamera(){
 }
 
 function startFaceCheck(){
-  const v=document.getElementById('login-video');
-  const c=document.getElementById('cam-canvas');
-  const ctx=c.getContext('2d');
+  const v=document.getElementById('login-video'),c=document.getElementById('cam-canvas'),ctx=c.getContext('2d');
   faceCheckInterval=setInterval(()=>{
     if(v.readyState<2)return;
     c.width=v.videoWidth||160;c.height=v.videoHeight||120;
     ctx.drawImage(v,0,0,c.width,c.height);
-    const img=ctx.getImageData(0,0,c.width,c.height);
-    const d=img.data;
-    let skinPx=0,totalPx=d.length/4;
-    for(let i=0;i<d.length;i+=16){
-      const r=d[i],g=d[i+1],b=d[i+2];
-      if(r>60&&g>40&&b>20&&r>g&&r>b&&(r-g)>10&&(r-b)>10&&r<250)skinPx++;
-    }
-    const ratio=skinPx/(totalPx/4)*4;
+    const img=ctx.getImageData(0,0,c.width,c.height),d=img.data;
+    let skinPx=0;
+    for(let i=0;i<d.length;i+=16){const r=d[i],g=d[i+1],b=d[i+2];if(r>60&&g>40&&b>20&&r>g&&r>b&&r-g>10&&r-b>10&&r<250)skinPx++}
+    faceDetected=skinPx/(d.length/16)>0.04;
     const ind=document.getElementById('face-ind');
-    if(ratio>0.04){
-      faceDetected=true;ind.textContent='顔を検出';ind.className='face-indicator detected';
-    }else{
-      faceDetected=false;ind.textContent='顔未検出';ind.className='face-indicator none';
-    }
+    ind.textContent=faceDetected?'顔を検出':'顔未検出';
+    ind.className='face-indicator '+(faceDetected?'detected':'none');
     checkLoginReady();
   },500);
 }
 
-function checkLoginReady(){
-  const pw=document.getElementById('pw-input').value;
-  document.getElementById('login-btn').disabled=!(faceDetected&&pw.length>0);
-}
+function checkLoginReady(){document.getElementById('login-btn').disabled=!(faceDetected&&document.getElementById('pw-input').value.length>0)}
+
+function stopCamera(){clearInterval(faceCheckInterval);if(videoStream)videoStream.getTracks().forEach(t=>t.stop())}
 
 function doLogin(){
-  const pw=document.getElementById('pw-input').value;
-  if(pw!==PASSWORD){document.getElementById('login-msg').textContent='パスワードが正しくありません';return}
+  if(document.getElementById('pw-input').value!==PASSWORD){document.getElementById('login-msg').textContent='パスワードが正しくありません';return}
   if(!faceDetected){document.getElementById('login-msg').textContent='顔が検出されていません';return}
-  stopCamera();
-  document.getElementById('screen-login').classList.remove('active');
-  document.getElementById('screen-app').classList.add('active');
-  refreshTypes();renderTable(db);
-}
-
-function stopCamera(){
-  clearInterval(faceCheckInterval);
-  if(videoStream)videoStream.getTracks().forEach(t=>t.stop());
+  stopCamera();showScreen('screen-app');doSearch();
 }
 
 function doLogout(){
-  document.getElementById('screen-app').classList.remove('active');
-  document.getElementById('screen-login').classList.add('active');
+  showScreen('screen-login');
   document.getElementById('pw-input').value='';
   document.getElementById('login-msg').textContent='';
   faceDetected=false;
@@ -314,100 +381,121 @@ function doLogout(){
 
 function fmt(d){return d?d.replace(/-/g,'/'):''}
 
-function refreshTypes(){
-  const s=[...new Set(db.map(r=>r.type).filter(Boolean))];
-  const sel=document.getElementById('s-type');
-  const v=sel.value;
-  sel.innerHTML='<option value="">すべて</option>';
-  s.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;if(t===v)o.selected=true;sel.appendChild(o)});
-}
-
-function renderTable(rows){
-  const tb=document.getElementById('result-body');
-  const em=document.getElementById('empty-msg');
-  document.getElementById('result-count').textContent=`${rows.length} 件`;
-  if(!rows.length){tb.innerHTML='';em.style.display='block';return}
-  em.style.display='none';
-  tb.innerHTML=rows.map(r=>`<tr>
-    <td><span class="badge">${r.id}</span></td>
-    <td>${fmt(r.date)}</td><td>${r.name}</td><td>${r.car}</td><td>${r.regno}</td>
-    <td>${r.part}</td><td>${r.type}</td><td>${r.c1}</td><td>${r.c2}</td><td>${r.mix}</td>
-    <td><div class="act-btns">
-      <button class="btn-icon" title="編集" onclick="openEdit(${r.id})"><i class="ti ti-edit"></i></button>
-      <button class="btn-icon del" title="削除" onclick="delRecord(${r.id})"><i class="ti ti-trash"></i></button>
-    </div></td></tr>`).join('');
-}
-
-function doSearch(){
-  const n=document.getElementById('s-name').value.trim().toLowerCase();
-  const c=document.getElementById('s-car').value.trim().toLowerCase();
-  const p=document.getElementById('s-part').value.trim().toLowerCase();
-  const col=document.getElementById('s-color').value.trim().toLowerCase();
+async function doSearch(){
+  document.getElementById('tbl-loading').style.display='block';
+  document.getElementById('main-table').style.display='none';
+  document.getElementById('empty-msg').style.display='none';
+  const n=document.getElementById('s-name').value.trim();
+  const c=document.getElementById('s-car').value.trim();
+  const p=document.getElementById('s-part').value.trim();
+  const col=document.getElementById('s-color').value.trim();
   const tp=document.getElementById('s-type').value;
   const df=document.getElementById('s-df').value;
   const dt=document.getElementById('s-dt').value;
-  renderTable(db.filter(r=>{
-    if(n&&!r.name.toLowerCase().includes(n))return false;
-    if(c&&!r.car.toLowerCase().includes(c))return false;
-    if(p&&!r.part.toLowerCase().includes(p))return false;
-    if(col&&!r.c1.toLowerCase().includes(col)&&!r.c2.toLowerCase().includes(col))return false;
-    if(tp&&r.type!==tp)return false;
-    if(df&&r.date<df)return false;
-    if(dt&&r.date>dt)return false;
-    return true;
-  }));
+  let q=sb.from('paint_records').select('*').order('id',{ascending:false});
+  if(n)q=q.ilike('customer_name','%'+n+'%');
+  if(c)q=q.ilike('car_name','%'+c+'%');
+  if(p)q=q.ilike('paint_area','%'+p+'%');
+  if(tp)q=q.eq('paint_type',tp);
+  if(df)q=q.gte('registered_date',df);
+  if(dt)q=q.lte('registered_date',dt);
+  const{data,error}=await q;
+  document.getElementById('tbl-loading').style.display='none';
+  if(error){alert('取得エラー: '+error.message);return}
+  let rows=data||[];
+  if(col)rows=rows.filter(r=>(r.color_no1||'').toLowerCase().includes(col.toLowerCase())||(r.color_no2||'').toLowerCase().includes(col.toLowerCase()));
+  currentRows=rows;refreshTypes(rows);renderTable(rows);
 }
 
-function clearSearch(){
-  ['s-name','s-car','s-part','s-color','s-df','s-dt'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('s-type').value='';
-  renderTable(db);
+function refreshTypes(rows){
+  const unique=[...new Set(rows.map(r=>r.paint_type).filter(Boolean))];
+  const sel=document.getElementById('s-type'),v=sel.value;
+  sel.innerHTML='<option value="">すべて</option>';
+  unique.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;if(t===v)o.selected=true;sel.appendChild(o)});
 }
 
-function addRecord(){
-  const date=document.getElementById('f-date').value;
-  const name=document.getElementById('f-name').value.trim();
-  if(!date||!name){showFormMsg('登録日とお客様名は必須です','err');return}
-  db.push({id:nextId++,date,name,
-    car:document.getElementById('f-car').value.trim(),
-    regno:document.getElementById('f-regno').value.trim(),
-    part:document.getElementById('f-part').value.trim(),
-    type:document.getElementById('f-type').value.trim(),
-    c1:document.getElementById('f-c1').value.trim(),
-    c2:document.getElementById('f-c2').value.trim(),
-    mix:document.getElementById('f-mix').value.trim(),
-    updated:new Date().toISOString().slice(0,10)
-  });
-  refreshTypes();showFormMsg('登録しました！','ok');clearForm();
+function renderTable(rows){
+  const tb=document.getElementById('result-body'),em=document.getElementById('empty-msg'),tbl=document.getElementById('main-table');
+  document.getElementById('result-count').textContent=rows.length+' 件';
+  if(!rows.length){tb.innerHTML='';tbl.style.display='none';em.style.display='block';return}
+  em.style.display='none';tbl.style.display='table';
+  tb.innerHTML=rows.map(r=>`<tr>
+    <td><span class="badge">${r.id}</span></td>
+    <td>${fmt(r.registered_date)}</td><td>${r.customer_name||''}</td><td>${r.car_name||''}</td>
+    <td>${r.reg_number||''}</td><td>${r.paint_area||''}</td><td>${r.paint_type||''}</td>
+    <td>${r.color_no1||''}</td><td>${r.color_no2||''}</td><td>${r.mix_detail||''}</td>
+    <td><div class="act-btns">
+      <button class="btn-icon" onclick="openEdit(${r.id})"><i class="ti ti-edit"></i></button>
+      <button class="btn-icon del" onclick="delRecord(${r.id})"><i class="ti ti-trash"></i></button>
+    </div></td></tr>`).join('');
 }
 
-function clearForm(){
-  ['f-date','f-name','f-car','f-regno','f-part','f-type','f-c1','f-c2','f-mix'].forEach(id=>document.getElementById(id).value='');
+function clearSearch(){['s-name','s-car','s-part','s-color','s-df','s-dt'].forEach(id=>document.getElementById(id).value='');document.getElementById('s-type').value='';doSearch()}
+
+async function addRecord(){
+  const date=document.getElementById('f-date').value,name=document.getElementById('f-name').value.trim();
+  if(!date||!name){showMsg('form-msg','登録日とお客様名は必須です','err');return}
+  const btn=document.getElementById('add-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 登録中...';
+  const{error}=await sb.from('paint_records').insert([{
+    registered_date:date,customer_name:name,
+    car_name:document.getElementById('f-car').value.trim(),
+    reg_number:document.getElementById('f-regno').value.trim(),
+    paint_area:document.getElementById('f-part').value.trim(),
+    paint_type:document.getElementById('f-type').value.trim(),
+    color_no1:document.getElementById('f-c1').value.trim(),
+    color_no2:document.getElementById('f-c2').value.trim(),
+    mix_detail:document.getElementById('f-mix').value.trim(),
+  }]);
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-plus"></i> 登録する';
+  if(error){showMsg('form-msg','登録エラー: '+error.message,'err');return}
+  showMsg('form-msg','登録しました！','ok');clearForm();
 }
 
-function showFormMsg(t,cls){
-  const el=document.getElementById('form-msg');
-  el.textContent=t;el.className='msg '+cls;
-  setTimeout(()=>el.textContent='',3000);
-}
+function clearForm(){['f-date','f-name','f-car','f-regno','f-part','f-type','f-c1','f-c2','f-mix'].forEach(id=>document.getElementById(id).value='')}
 
-function openEdit(id){
-  const r=db.find(x=>x.id===id);if(!r)return;
+async function openEdit(id){
+  const{data,error}=await sb.from('paint_records').select('*').eq('id',id).single();
+  if(error||!data){alert('取得エラー');return}
   editingId=id;
-  ['date','name','car','regno','part','type','c1','c2','mix'].forEach(k=>document.getElementById('e-'+k).value=r[k]||'');
+  document.getElementById('e-date').value=data.registered_date||'';
+  document.getElementById('e-name').value=data.customer_name||'';
+  document.getElementById('e-car').value=data.car_name||'';
+  document.getElementById('e-regno').value=data.reg_number||'';
+  document.getElementById('e-part').value=data.paint_area||'';
+  document.getElementById('e-type').value=data.paint_type||'';
+  document.getElementById('e-c1').value=data.color_no1||'';
+  document.getElementById('e-c2').value=data.color_no2||'';
+  document.getElementById('e-mix').value=data.mix_detail||'';
+  document.getElementById('edit-msg').textContent='';
   document.getElementById('edit-modal').classList.add('open');
 }
 
-function saveEdit(){
-  const r=db.find(x=>x.id===editingId);if(!r)return;
-  ['date','name','car','regno','part','type','c1','c2','mix'].forEach(k=>r[k]=document.getElementById('e-'+k).value.trim());
-  r.updated=new Date().toISOString().slice(0,10);
-  closeModal();refreshTypes();doSearch();
+async function saveEdit(){
+  const btn=document.getElementById('save-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 保存中...';
+  const{error}=await sb.from('paint_records').update({
+    registered_date:document.getElementById('e-date').value,
+    customer_name:document.getElementById('e-name').value.trim(),
+    car_name:document.getElementById('e-car').value.trim(),
+    reg_number:document.getElementById('e-regno').value.trim(),
+    paint_area:document.getElementById('e-part').value.trim(),
+    paint_type:document.getElementById('e-type').value.trim(),
+    color_no1:document.getElementById('e-c1').value.trim(),
+    color_no2:document.getElementById('e-c2').value.trim(),
+    mix_detail:document.getElementById('e-mix').value.trim(),
+    updated_at:new Date().toISOString(),
+  }).eq('id',editingId);
+  btn.disabled=false;btn.innerHTML='保存する';
+  if(error){showMsg('edit-msg','保存エラー: '+error.message,'err');return}
+  closeModal();doSearch();
 }
 
-function delRecord(id){
+async function delRecord(id){
   if(!confirm('このデータを削除しますか？'))return;
-  db=db.filter(x=>x.id!==id);refreshTypes();doSearch();
+  const{error}=await sb.from('paint_records').delete().eq('id',id);
+  if(error){alert('削除エラー: '+error.message);return}
+  doSearch();
 }
 
 function closeModal(){document.getElementById('edit-modal').classList.remove('open')}
@@ -420,105 +508,66 @@ function switchTab(name){
 }
 
 function exportCSV(){
-  const h='ID,登録日,お客様名,車名,登録番号,塗装箇所,塗料区分,色番号１,色番号２,調色内容,更新日時';
-  const rows=db.map(r=>[r.id,fmt(r.date),r.name,r.car,r.regno,r.part,r.type,r.c1,r.c2,r.mix,fmt(r.updated)].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(','));
-  const bom='\uFEFF';
-  const blob=new Blob([bom+[h,...rows].join('\n')],{type:'text/csv;charset=utf-8'});
+  const h='ID,登録日,お客様名,車名,登録番号,塗装箇所,塗料区分,色番号１,色番号２,調色内容';
+  const rows=currentRows.map(r=>[r.id,fmt(r.registered_date),r.customer_name,r.car_name,r.reg_number,r.paint_area,r.paint_type,r.color_no1,r.color_no2,r.mix_detail].map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(','));
+  const blob=new Blob(['\uFEFF'+[h,...rows].join('\n')],{type:'text/csv;charset=utf-8'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='塗装管理データ.csv';a.click();
 }
 
-function handleCsvFile(input){
-  const f=input.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=e=>parseCsv(e.target.result);
-  r.readAsText(f,'UTF-8');
-  input.value='';
-}
-
-function handleCsvDrop(e){
-  const f=e.dataTransfer.files[0];if(!f)return;
-  const r=new FileReader();
-  r.onload=ev=>parseCsv(ev.target.result);
-  r.readAsText(f,'UTF-8');
-}
+function handleCsvFile(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=e=>parseCsv(e.target.result);r.readAsText(f,'UTF-8');input.value=''}
+function handleCsvDrop(e){const f=e.dataTransfer.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>parseCsv(ev.target.result);r.readAsText(f,'UTF-8')}
 
 function parseCsv(text){
   const lines=text.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n').filter(l=>l.trim());
-  if(lines.length<2){showCsvMsg('データ行がありません','err');return}
+  if(lines.length<2){showMsg('csv-msg','データ行がありません','err');return}
   const header=csvRow(lines[0]).map(h=>h.trim());
-  const colMap={
-    '登録日':['登録日','date'],'お客様名':['お客様名','name','顧客名'],
-    '車名':['車名','car'],'登録番号':['登録番号','regno'],
-    '塗装箇所':['塗装箇所','part'],'塗料区分':['塗料区分','type'],
-    '色番号１':['色番号１','色番号1','c1'],'色番号２':['色番号２','色番号2','c2'],'調色内容':['調色内容','mix']
-  };
+  const colMap={registered_date:['登録日','date'],customer_name:['お客様名','name','顧客名'],car_name:['車名','car'],reg_number:['登録番号','regno'],paint_area:['塗装箇所','part'],paint_type:['塗料区分','type'],color_no1:['色番号１','色番号1','c1'],color_no2:['色番号２','色番号2','c2'],mix_detail:['調色内容','mix']};
   const idx={};
-  for(const[key,aliases]of Object.entries(colMap)){
-    const i=header.findIndex(h=>aliases.includes(h));if(i>=0)idx[key]=i;
-  }
-  if(idx['お客様名']===undefined){showCsvMsg('「お客様名」列が見つかりません。ヘッダー行を確認してください。','err');return}
+  for(const[key,aliases]of Object.entries(colMap)){const i=header.findIndex(h=>aliases.includes(h));if(i>=0)idx[key]=i}
+  if(idx.customer_name===undefined){showMsg('csv-msg','「お客様名」列が見つかりません','err');return}
   pendingCsv=[];
   for(let i=1;i<lines.length;i++){
     const cols=csvRow(lines[i]);
     const g=k=>idx[k]!==undefined?(cols[idx[k]]||'').trim():'';
-    const name=g('お客様名');if(!name)continue;
-    const rawDate=g('登録日');
-    pendingCsv.push({name,date:rawDate?rawDate.replace(/\//g,'-'):'',
-      car:g('車名'),regno:g('登録番号'),part:g('塗装箇所'),type:g('塗料区分'),
-      c1:g('色番号１'),c2:g('色番号２'),mix:g('調色内容')});
+    const name=g('customer_name');if(!name)continue;
+    const rd=g('registered_date');
+    pendingCsv.push({customer_name:name,registered_date:rd?rd.replace(/\//g,'-'):null,car_name:g('car_name'),reg_number:g('reg_number'),paint_area:g('paint_area'),paint_type:g('paint_type'),color_no1:g('color_no1'),color_no2:g('color_no2'),mix_detail:g('mix_detail')});
   }
-  if(!pendingCsv.length){showCsvMsg('取り込み可能なデータがありません','err');return}
+  if(!pendingCsv.length){showMsg('csv-msg','取り込み可能なデータがありません','err');return}
   showCsvPreview();
-  showCsvMsg(`${pendingCsv.length} 件のデータを確認しました。インポートを実行しますか？`,'ok');
+  showMsg('csv-msg',pendingCsv.length+' 件を確認しました。インポートを実行しますか？','ok');
   document.getElementById('csv-import-btn').style.display='block';
 }
 
-function csvRow(line){
-  const res=[];let cur='',inQ=false;
-  for(let i=0;i<line.length;i++){
-    const c=line[i];
-    if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++}else inQ=!inQ}
-    else if(c===','&&!inQ){res.push(cur);cur=''}
-    else cur+=c;
-  }
-  res.push(cur);return res;
-}
+function csvRow(line){const res=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++}else inQ=!inQ}else if(c===','&&!inQ){res.push(cur);cur=''}else cur+=c}res.push(cur);return res}
 
 function showCsvPreview(){
   const max=Math.min(pendingCsv.length,5);
   const cols=['登録日','お客様名','車名','塗装箇所','塗料区分','色番号１','色番号２'];
-  const keys=['date','name','car','part','type','c1','c2'];
+  const keys=['registered_date','customer_name','car_name','paint_area','paint_type','color_no1','color_no2'];
   let html=`<div class="preview-table"><table><thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;
-  for(let i=0;i<max;i++){
-    const r=pendingCsv[i];
-    html+=`<tr>${keys.map(k=>`<td>${r[k]||''}</td>`).join('')}</tr>`;
-  }
+  for(let i=0;i<max;i++){const r=pendingCsv[i];html+=`<tr>${keys.map(k=>`<td>${r[k]||''}</td>`).join('')}</tr>`}
   if(pendingCsv.length>5)html+=`<tr><td colspan="${cols.length}" style="text-align:center;color:#aaa;font-size:11px">… 他 ${pendingCsv.length-5} 件</td></tr>`;
   html+='</tbody></table></div>';
   document.getElementById('csv-preview').innerHTML=html;
 }
 
-function importCsv(){
-  pendingCsv.forEach(r=>{db.push({id:nextId++,...r,updated:new Date().toISOString().slice(0,10)})});
-  const count=pendingCsv.length;
-  pendingCsv=[];
-  document.getElementById('csv-preview').innerHTML='';
-  document.getElementById('csv-import-btn').style.display='none';
-  refreshTypes();showCsvMsg(`${count} 件をインポートしました！`,'ok');
+async function importCsv(){
+  const btn=document.getElementById('csv-exec-btn');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span> インポート中...';
+  const{error}=await sb.from('paint_records').insert(pendingCsv);
+  btn.disabled=false;btn.innerHTML='<i class="ti ti-file-import"></i> インポート実行';
+  if(error){showMsg('csv-msg','インポートエラー: '+error.message,'err');return}
+  const count=pendingCsv.length;cancelCsv();showMsg('csv-msg',count+' 件をインポートしました！','ok');
 }
 
-function cancelCsv(){
-  pendingCsv=[];
-  document.getElementById('csv-preview').innerHTML='';
-  document.getElementById('csv-import-btn').style.display='none';
-  document.getElementById('csv-msg').textContent='';
-}
+function cancelCsv(){pendingCsv=[];document.getElementById('csv-preview').innerHTML='';document.getElementById('csv-import-btn').style.display='none';document.getElementById('csv-msg').textContent=''}
 
-function showCsvMsg(t,cls){
-  const el=document.getElementById('csv-msg');el.textContent=t;el.className='msg '+cls;
-}
+function showMsg(id,t,cls){const el=document.getElementById(id);el.textContent=t;el.className='msg '+cls;if(cls==='ok')setTimeout(()=>el.textContent='',4000)}
 
-startCamera();
+// 起動
+const cfg=loadConfig();
+if(cfg){initSb(cfg);goToLogin()}
 </script>
 </body>
 </html>
